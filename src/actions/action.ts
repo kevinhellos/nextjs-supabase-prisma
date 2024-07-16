@@ -21,6 +21,25 @@ export async function addTodo(formData: FormData) {
     }
 }
 
+export async function updateTodo(formData: FormData) {
+    const id = parseInt(String(formData.get("id")));
+    const title = formData.get("title");
+    try {
+        await prisma.todo.update({
+            where: {
+                id
+            },
+            data: {
+                title: String(title),
+            }
+        });
+        revalidatePath("/");
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 export async function deleteTodo(formData: FormData) {
     const id = parseInt(String(formData.get("id")));
     try {

@@ -1,6 +1,8 @@
-import { addTodo, deleteTodo } from "@/actions/action";
+import { deleteTodo } from "@/actions/action";
 import AddTodoForm from "@/components/AddTodoForm";
 import Container from "@/components/Container";
+import EditTodoForm from "@/components/EditTodoForm";
+import NoTodos from "@/components/NoTodos";
 import { PrismaClient } from "@prisma/client";
 
 export default async function Home() {
@@ -18,31 +20,27 @@ export default async function Home() {
       <AddTodoForm/>
 
       {todos.map((todo, index) => (
-        <div key={index} className="border border-gray-200 px-5 py-2 rounded-md mb-5">
-          <p className="mt-3">{todo.title}</p>
-          <form action={deleteTodo}>
-            <input type="hidden" name="id" id={String(todo.id)} value={String(todo.id)}/>
+        <div key={index} className="border border-gray-200 px-5 py-2 rounded-md mb-5 overflow-auto">
+        
+          <EditTodoForm
+            id={todo.id}
+          >
+            <p className="mt-3">{todo.title}</p>
+          </EditTodoForm>
+          
+          <form action={deleteTodo} className="float-end">
+            <input type="hidden" name="id" value={String(todo.id)}/>
             <button 
               type="submit"
-              className="btn btn-sm btn-black mt-3 mb-3">
+              className="btn btn-sm btn-black mt-3 mb-3 me-3">
               Delete
             </button>
           </form>
+
         </div>
       ))}
 
-      {todos.length < 1 &&
-        <div className="mt-16 text-center">
-          <h1 className="text-lg lg:text-2xl text-gray-700">You currently have no todos {"🎉"}</h1>
-          <p className="text-sm mt-3 text-gray-500">Start adding todos to see them here</p>
-          <img
-            src="/no-todo.png"
-            width={300}
-            className="mx-auto"
-            alt="No todos"
-          />
-        </div>
-      }
+      {todos.length < 1 && <NoTodos/>}
 
     </Container>
   );
