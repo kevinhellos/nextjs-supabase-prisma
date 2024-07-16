@@ -4,7 +4,7 @@ import { updateTodo } from "@/actions/action";
 import { useState } from "react";
 
 export default function EditTodoForm(
-    { id, children } : { id: number, children: React.ReactNode}
+    { id, children } : { id: number, children: React.ReactNode }
 ) {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
